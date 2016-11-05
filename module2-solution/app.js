@@ -1,50 +1,80 @@
 (function () {
 'use strict';
 
-angular.module('MsgApp', [])
-.controller('MsgController', MsgController)
-.filter('loves', LovesFilterf)
-.filter('truth', TruthFilter);
+angular.module('ShoppingListCheckOff', [])
+.controller('ToBuyController', ToBuyController)
+.controller('AlreadyBoughtController', AlreadyBoughtController)
+.service('ShoppingListCheckOffService', ShoppingListCheckOffService);
 
-MsgController.$inject = ['$scope', 'lovesFilter'];
-function MsgController($scope, lovesFilter) {
-  $scope.stateOfBeing = "hungry";
+ToBuyController.$inject = ['ShoppingListCheckOffService'];
+function ToBuyController(ShoppingListCheckOffService) {
+  var buyer = this;
 
-  $scope.sayMessage = function () {
-    var msg = "Yaakov likes to eat healthy snacks at night!";
-    return msg;
-  };
+  buyer.items = ShoppingListCheckOffService.getToBuyList();
 
-  $scope.sayLovesMessage = function () {
-    var msg = "Yaakov likes to eat healthy snacks at night!";
-    msg = lovesFilter(msg)
-    return msg;
-  };
+  buyer.isListEmpty = function() {
+    return buyer.items.length == 0;
+  }
 
-  $scope.feedYaakov = function () {
-    $scope.stateOfBeing = "fed";
-  };
-  
-  $scope.contador = 0;
-  $scope.incrementaContador = function () {
-	  return ++$scope.contador;
+  buyer.buyItem = function(index) {
+    ShoppingListCheckOffService.buyItem(index);
   }
 }
 
-function LovesFilterf() {
-  return function (input) {
-    input = input || "";
-    input = input.replace("likes", "loves");
-    return input;
-  };
-}
+AlreadyBoughtController.$inject = ['ShoppingListCheckOffService'];
+function AlreadyBoughtController(ShoppingListCheckOffService) {
+  var alBuyer = this;
 
-function TruthFilter() {
-  return function (input, target, replace) {
-    input = input || "";
-    input = input.replace(target, replace);
-    return input;
+  alBuyer.items = ShoppingListCheckOffService.getAlreadyBoughtList();
+
+  alBuyer.isListEmpty = function() {
+    return alBuyer.items.length == 0;
   }
 }
+
+function ShoppingListCheckOffService() {
+  var service = this;
+
+  var defaultValues = [
+    {
+      name: 'Butter',
+      quantity: 10
+    },
+    {
+      name: 'Cheese',
+      quantity: 7
+    },
+    {
+      name: 'Milk',
+      quantity: 3
+    },
+    {
+      name: 'Yogurt',
+      quantity: 8
+    },
+    {
+      name: 'Corn',
+      quantity: 6
+    }
+  ];
+
+  var toBuyList = defaultValues;
+  var alreadyBoughtList = [];
+
+  service.buyItem = function (index) {
+    alreadyBoughtList.push(
+      toBuyList.splice(index, 1)[0]
+    );
+  }
+
+  service.getToBuyList = function() {
+    return toBuyList;
+  }
+
+  service.getAlreadyBoughtList = function() {
+    return alreadyBoughtList;
+  }
+}
+
 
 })();
