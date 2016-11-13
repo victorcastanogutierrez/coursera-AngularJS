@@ -60,10 +60,14 @@ function NarrowItDownController (MenuSearchService) {
   ndList.warningMessage = "Nothing found";
 
   ndList.findItems = function() {
-    var promise = MenuSearchService.getMatchedMenuItems(this.searchTerm);
-    promise.then(function(result) {
-      ndList.found = result;
-    });
+    if (ndList.searchTerm == "") {
+      ndList.found = [];
+    } else {
+      var promise = MenuSearchService.getMatchedMenuItems(ndList.searchTerm);
+      promise.then(function(result) {
+        ndList.found = result;
+      });
+    }
   };
 
   ndList.removeItem = function (index) {
@@ -76,10 +80,11 @@ function MenuSearchService($http, ApiBasePath) {
   var service = this;
 
   service.getMatchedMenuItems = function (searchTerm) {
-    return $http({
+    var promise = $http({
       method: "GET",
       url: (ApiBasePath + "/menu_items.json"),
-    }).then(function (result) {
+    })
+    return promise.then(function (result) {
       var foundItems = result.data.menu_items;
       foundItems = foundItems.filter(function (element) {
         return element.description.indexOf(searchTerm) != -1;
