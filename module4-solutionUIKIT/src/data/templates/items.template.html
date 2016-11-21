@@ -1,0 +1,14 @@
+<!-- <ol>
+  <li ng-repeat="item in $ctrl.itemslist">
+    {{ item.name }}
+  </li>
+</ol> -->
+
+<table class="uk-table">
+    <tbody>
+        <tr ng-repeat="item in $ctrl.itemslist">
+            <td>{{ $index }}
+            <td>{{ item.name }}</td>
+        </tr>
+    </tbody>
+</table>
