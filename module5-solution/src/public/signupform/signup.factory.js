@@ -9,11 +9,9 @@ function SignupFactory() {
 
   return {
     saveUser: function (userData) {
-      console.log("saved");
       signUpUser = userData;
     },
     getSign: function () {
-      console.log("hola", signUpUser);
       return signUpUser;
     }
   };

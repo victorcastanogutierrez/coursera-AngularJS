@@ -8,12 +8,18 @@
           ng-model="$ctrl.firstname"
           aria-describedby="sizing-addon3">
         </div>
+        <span ng-if="signupForm.firstname.$invalid && signupForm.firstname.$touched">
+          First name is required
+        </span>
         <div class="form-group">
           <input type="text" name="lastname" class="form-control" placeholder="Last name"
           required
           ng-model="$ctrl.lastname"
           aria-describedby="sizing-addon3">
         </div>
+        <span ng-if="signupForm.lastname.$invalid && signupForm.lastname.$touched">
+          Last name is required
+        </span>
         <div class="form-group ">
           <input type="email" name="email" class="form-control" placeholder="Email address"
           required
@@ -40,13 +46,17 @@
           aria-describedby="sizing-addon3"
           menuitem-validator>
           <span ng-show="signupForm.menunumber.$error.validate">
-            No such menu number exists</span>
+            No such menu number exists
+          </span>
+          <span ng-if="signupForm.menunumber.$invalid && signupForm.menunumber.$touched">
+            Favorite menu number is required
+          </span>
         </div>
         <button type="button" class="btn btn-success"
-          ng-disabled="signupForm.$invalid"
+          ng-disabled="signupForm.$invalid || signupForm.$pending"
           ng-click="$ctrl.submit()"
           >
-          Save!</button>
+          Save!</button><br><br>
           <div ng-show="$ctrl.saved" class="alert alert-success" role="alert">
             Your information has been saved
           </div>

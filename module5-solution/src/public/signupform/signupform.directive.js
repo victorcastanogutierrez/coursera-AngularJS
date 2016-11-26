@@ -7,7 +7,7 @@ angular.module('public')
         restrict: 'A',
         require: 'ngModel',
         link: function (scope, element, attr, ngModel) {
-          ngModel.$asyncValidators.username = function(modelValue, viewValue) {
+          ngModel.$asyncValidators.menunumber = function(modelValue, viewValue) {
             return MenuService.getMenuItem(viewValue).then(
               function(response) {
                 ngModel.$setValidity('validate', true);
